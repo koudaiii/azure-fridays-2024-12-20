@@ -29,6 +29,63 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </QueryClientProvider>
         <ScrollRestoration />
         <Scripts />
+	        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              var appInsights = window.appInsights || (function (config) {
+                function createMethod(name) {
+                  appInsights[name] = function () {
+                    var args = arguments;
+                    appInsights.queue.push(function () {
+                      appInsights[name].apply(appInsights, args);
+                    });
+                  };
+                }
+                var appInsights = { config: config };
+                var document = window.document;
+                var window = window;
+                setTimeout(function () {
+                  var script = document.createElement("script");
+                  script.src = config.url || "https://";
+                  document.getElementsByTagName("script")[0].parentNode.appendChild(script);
+                });
+                try {
+                  appInsights.cookie = document.cookie;
+                } catch (e) {}
+                appInsights.queue = [];
+                var methods = ["Event", "Exception", "Metric", "PageView", "Trace", "Dependency"];
+                while (methods.length) {
+                  createMethod("track" + methods.pop());
+                }
+                createMethod("setAuthenticatedUserContext");
+                createMethod("clearAuthenticatedUserContext");
+                createMethod("startTrackEvent");
+                createMethod("stopTrackEvent");
+                createMethod("startTrackPage");
+                createMethod("stopTrackPage");
+                createMethod("flush");
+                if (!config.disableExceptionTracking) {
+                  var originalOnError = window.onerror;
+                  window.onerror = function (message, url, lineNumber, columnNumber, error) {
+                    var handled = originalOnError && originalOnError(message, url, lineNumber, columnNumber, error);
+                    if (handled !== true) {
+                      appInsights["_onerror"](message, url, lineNumber, columnNumber, error);
+                    }
+                    return handled;
+                  };
+                }
+                return appInsights;
+              })({
+                instrumentationKey: "0000-0000-0000-0000"
+              });
+              window.appInsights = appInsights;
+              if (appInsights.queue && appInsights.queue.length === 0) {
+                appInsights.trackPageView();
+              }
+              window.appInsights=appInsights,appInsights.queue&&0===appInsights.queue.length&&appInsights.trackPageView();
+            `,
+          }}
+        />
       </body>
     </html>
   );
