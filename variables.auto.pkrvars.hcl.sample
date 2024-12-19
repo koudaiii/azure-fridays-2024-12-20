@@ -1,0 +1,13 @@
+client_id = "<client_id>"
+client_secret = "<client_secret>"
+tenant_id = "<tenant_id | az account show --query tenantId -o tsv>"
+subscription_id = "<subscription_id | az account show --query id -o tsv>"
+managed_image_resource_group_name = "rg-azure-fridays-2024-12-20"
+
+gallery_name = "galleryazurefridays"
+image_name = "imageazurefridays"
+image_version = "0.0.1"
+replication_regions = ["japaneast"]
+resource_group = "rg-azure-fridays-2024-12-20"
+
+vm_size = "Standard_D2s_v4"

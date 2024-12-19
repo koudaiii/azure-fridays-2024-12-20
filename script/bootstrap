@@ -1,0 +1,49 @@
+#!/bin/bash
+
+## This script is used to bootstrap the project
+## name rule in azure resource group is lowercase, alphanumeric, and hyphen using CAF naming convention
+## Resource group name is rg-azure-fridays-<date> where date is in the format yyyy-mm-dd
+## Resource group location is japaneast
+
+# Check az cli
+if ! command -v az &> /dev/null
+then
+    echo "az cli could not be found"
+    exit
+fi
+
+# Login to azure
+az login
+
+# Create resource group
+az group create \
+  --name rg-azure-fridays-2024-12-20 \
+  --location japaneast
+
+# Create Compute Gallery
+az sig create \
+  --resource-group rg-azure-fridays-2024-12-20 \
+  --gallery-name galleryazurefridays \
+  --description "Azure Fridays Gallery" \
+  --location japaneast
+
+# Create Image Definition
+az sig image-definition create \
+  --resource-group rg-azure-fridays-2024-12-20 \
+  --gallery-name galleryazurefridays \
+  --gallery-image-definition imageazurefridays \
+  --publisher azurefridays \
+  --offer azurefridays \
+  --sku 1.0.0 \
+  --os-type Linux \
+  --os-state Generalized \
+  --hyper-v-generation V2 \
+  --description "Azure Fridays Image" \
+  --location japaneast
+
+# Create Service Principal
+az ad sp create-for-rbac \
+  --name http://azure-fridays-sp \
+  --role contributor \
+  --scopes /subscriptions/$(az account show --query id -o tsv)/resourceGroups/rg-azure-fridays-2024-12-20 \
+  -o json > principal.json
