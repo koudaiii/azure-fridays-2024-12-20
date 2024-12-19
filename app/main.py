@@ -12,6 +12,18 @@ from sqlalchemy.exc import SQLAlchemyError
 from . import app_handlers, chair_handlers, internal_handlers, owner_handlers
 from .sql import engine
 
+# ref https://learn.microsoft.com/ja-jp/azure/azure-monitor/app/opentelemetry-enable?tabs=python#modify-your-application
+# Import the `configure_azure_monitor()` function from the
+# `azure.monitor.opentelemetry` package.
+from azure.monitor.opentelemetry import configure_azure_monitor
+
+# Import the tracing api from the `opentelemetry` package.
+from opentelemetry import trace
+
+# Configure OpenTelemetry to use Azure Monitor with the
+# APPLICATIONINSIGHTS_CONNECTION_STRING environment variable.
+configure_azure_monitor()
+
 app = FastAPI()
 app.include_router(app_handlers.router)
 app.include_router(chair_handlers.router)
