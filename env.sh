@@ -6,3 +6,6 @@ ISUCON_DB_NAME="isuride"
 
 # マッチング間隔（秒）
 ISUCON_MATCHING_INTERVAL=0.5
+
+# Application Insights
+APPLICATIONINSIGHTS_CONNECTION_STRING="InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://;LiveEndpoint=https://;ApplicationId=00000000-0000-0000-0000-000000000000"

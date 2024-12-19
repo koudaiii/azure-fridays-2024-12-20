@@ -10,6 +10,7 @@ dependencies = [
     "sqlalchemy>=2.0.36",
     "urllib3>=2.2.3",
     "uvicorn-worker>=0.2.0",
+    "azure-monitor-opentelemetry>=1.6.4",
 ]
 
 [tool.ruff.lint]
