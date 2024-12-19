@@ -22,7 +22,9 @@ from opentelemetry import trace
 
 # Configure OpenTelemetry to use Azure Monitor with the
 # APPLICATIONINSIGHTS_CONNECTION_STRING environment variable.
-configure_azure_monitor()
+configure_azure_monitor(
+    enable_live_metrics=True
+)
 
 app = FastAPI()
 app.include_router(app_handlers.router)
